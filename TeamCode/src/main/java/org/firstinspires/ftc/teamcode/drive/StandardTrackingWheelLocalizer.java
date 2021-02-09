@@ -27,11 +27,11 @@ import java.util.List;
  */
 @Config
 public class StandardTrackingWheelLocalizer extends ThreeTrackingWheelLocalizer {
-    public static double TICKS_PER_REV = 0;
-    public static double WHEEL_RADIUS = 2; // in
+    public static double TICKS_PER_REV = 8192; //REV Through Bore Encoder: https://www.revrobotics.com/rev-11-1271/
+    public static double WHEEL_RADIUS = 0.6889764; //35mm / 2 = 15.mm ==> inches: https://www.rotacaster.com.au/shop-product/robotic-wheels/rotacaster-35mm-double--solid--roller--abs-body-8-2mm-keyed-bore-no-bushing
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (encoder) speed
 
-    public static double LATERAL_DISTANCE = 10; // in; distance between the left and right wheels
+    public static double LATERAL_DISTANCE = 13.75; // in; distance between the left and right wheels
     public static double FORWARD_OFFSET = 4; // in; offset of the lateral wheel
 
     private Encoder leftEncoder, rightEncoder, frontEncoder;
