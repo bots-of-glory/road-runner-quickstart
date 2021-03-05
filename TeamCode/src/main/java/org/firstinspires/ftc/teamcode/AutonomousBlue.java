@@ -18,7 +18,7 @@ import java.util.List;
 
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="Autonomous", group="Auto")
 public class AutonomousBlue extends LinearOpMode {
-    private ElapsedTime     runtime = new ElapsedTime();
+    private ElapsedTime runtime = new ElapsedTime();
     private DcMotor frontLeft;
     private DcMotor rearLeft;
     private DcMotor frontRight;
@@ -115,9 +115,9 @@ public class AutonomousBlue extends LinearOpMode {
             Boolean objectDetected = false;
 
             waitForStart();
-
+            runtime.reset();
             if (opModeIsActive()) {
-                while (objectDetected == false) {
+                while (objectDetected == false && runtime.seconds() <= 3) {
                     if (tfod != null) {
                         // getUpdatedRecognitions() will return null if no new information is available since
                         // the last time that call was made.
