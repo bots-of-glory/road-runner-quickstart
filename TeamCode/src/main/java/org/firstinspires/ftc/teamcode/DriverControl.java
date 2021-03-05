@@ -67,9 +67,9 @@ public class DriverControl extends LinearOpMode {
         double rear_right;
 
         //Declare Speed Variables(0 = slow)(1 = fast)
-        int speedState = 1;
         double fast = 1;
-
+        double slow = .5;
+        boolean fastTrue = true;
         float   leftPower, rightPower, xValue, yValue;
         //Declare Direction Variable(s)
         int direction = -1;
@@ -79,6 +79,13 @@ public class DriverControl extends LinearOpMode {
             while (opModeIsActive()) {
 //-----------------------------------Gamepad 1 Start------------------------------------------------
 
+                if (gamepad1.left_bumper) {
+                    fastTrue = true;
+                } else if (gamepad1.right_bumper) {
+                    fastTrue = false;
+                } else {
+                    fastTrue = true;
+                }
                 //Declare Values to Mecanum Variables
                 drive = gamepad1.right_stick_y * direction;
                 strafe = gamepad1.right_stick_x * direction;
@@ -86,53 +93,54 @@ public class DriverControl extends LinearOpMode {
 
                 //Mecanum direction calculation
 
-                    front_left = drive - strafe - rotate;
-                    rear_left = drive + strafe - rotate;
-                    front_right = drive + strafe + rotate;
-                    rear_right = drive - strafe + rotate;
+                front_left = drive - strafe - rotate;
+                rear_left = drive + strafe - rotate;
+                front_right = drive + strafe + rotate;
+                rear_right = drive - strafe + rotate;
 
-
-                frontLeft.setPower((front_left) * fast);
-                rearLeft.setPower((rear_left) * fast);
-                frontRight.setPower((front_right) * fast);
-                rearRight.setPower((rear_right) * fast);
-
-
-                //---------claw----------
-                while (gamepad1.dpad_down) {
-                    clawLift.setPower(1);
+                while (fastTrue = true) {
+                    frontLeft.setPower((front_left) * fast);
+                    rearLeft.setPower((rear_left) * fast);
+                    frontRight.setPower((front_right) * fast);
+                    rearRight.setPower((rear_right) * fast);
                 }
-                while (gamepad1.dpad_up) {
-                    clawLift.setPower(-1);
+                while (fastTrue = false) {
+                    frontLeft.setPower((front_left) * slow);
+                    rearLeft.setPower((rear_left) * slow);
+                    frontRight.setPower((front_right) * slow);
+                    rearRight.setPower((rear_right) * slow);
                 }
+                    //---------claw----------
+                    while (gamepad1.dpad_down) {
+                        clawLift.setPower(1);
+                    }
+                    while (gamepad1.dpad_up) {
+                        clawLift.setPower(-1);
+                    }
 
-                if (gamepad1.dpad_left) {
-                    claw.setPower(1);
-                } else if (gamepad1.dpad_right) {
-                    claw.setPower(-1);
-                }
+                    if (gamepad1.dpad_left) {
+                        claw.setPower(1);
+                    } else if (gamepad1.dpad_right) {
+                        claw.setPower(-1);
+                    }
 
 //------------------------------------Gamepad 1 End-------------------------------------------------
 // ------------------------------------Gamepad 2 Start-------------------------------------------------
-                if (gamepad2.right_trigger == 1) {
-                    shooterServo.setPosition(-1);
-                } else {
-                    shooterServo.setPosition(1);
-                }
+                    if (gamepad2.right_trigger == 1) {
+                        shooterServo.setPosition(-1);
+                    } else {
+                        shooterServo.setPosition(1);
+                    }
 
-                if (gamepad2.a) {
-                    shooter.setPower(1);
-                }
+                    if (gamepad2.a) {
+                        shooter.setPower(1);
+                    }
 
-                if (gamepad2.left_bumper) {
-                    intake.setPower(1);
-                } else if (gamepad2.right_bumper) {
-                    intake.setPower(-1);
-                }
-
-
-
-
+                    if (gamepad2.left_bumper) {
+                        intake.setPower(1);
+                    } else if (gamepad2.right_bumper) {
+                        intake.setPower(-1);
+                    }
             }
 //------------------------------------Gamepad 2 End-------------------------------------------------
 
