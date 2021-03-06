@@ -1,27 +1,14 @@
 package org.firstinspires.ftc.teamcode;
-
-import com.qualcomm.ftccommon.SoundPlayer;
-import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.configuration.annotations.ServoType;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.robotcontroller.external.samples.SampleRevBlinkinLedDriver;
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.internal.system.Deadline;
-
-import java.util.concurrent.TimeUnit;
 
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp (name = "DriverControl" , group = "testOp")
-//@Disabled
 
 public class DriverControl extends LinearOpMode {
-    //DcMotors
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor frontLeft;
     private DcMotor rearLeft;
@@ -55,6 +42,8 @@ public class DriverControl extends LinearOpMode {
         shooter.setDirection(DcMotor.Direction.FORWARD);
         intake.setDirection(DcMotor.Direction.FORWARD);
         clawLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        shooterServo.scaleRange(-1,1);
+        shooterServo.setDirection(Servo.Direction.REVERSE);
 
         //Declare Mecanum Drive Variables
         double drive;
@@ -69,8 +58,7 @@ public class DriverControl extends LinearOpMode {
         //Declare Speed Variables(0 = slow)(1 = fast)
         double fast = 1;
         double slow = .5;
-        boolean fastTrue = true;
-        float   leftPower, rightPower, xValue, yValue;
+        int speedstate = 1;
         //Declare Direction Variable(s)
         int direction = -1;
         {
@@ -80,11 +68,9 @@ public class DriverControl extends LinearOpMode {
 //-----------------------------------Gamepad 1 Start------------------------------------------------
 
                 if (gamepad1.left_bumper) {
-                    fastTrue = true;
+                    speedstate = 0;
                 } else if (gamepad1.right_bumper) {
-                    fastTrue = false;
-                } else {
-                    fastTrue = true;
+                    speedstate = 1;
                 }
                 //Declare Values to Mecanum Variables
                 drive = gamepad1.right_stick_y * direction;
@@ -97,19 +83,18 @@ public class DriverControl extends LinearOpMode {
                 rear_left = drive + strafe - rotate;
                 front_right = drive + strafe + rotate;
                 rear_right = drive - strafe + rotate;
-
-                while (fastTrue = true) {
-                    frontLeft.setPower((front_left) * fast);
-                    rearLeft.setPower((rear_left) * fast);
-                    frontRight.setPower((front_right) * fast);
-                    rearRight.setPower((rear_right) * fast);
-                }
-                while (fastTrue = false) {
-                    frontLeft.setPower((front_left) * slow);
-                    rearLeft.setPower((rear_left) * slow);
-                    frontRight.setPower((front_right) * slow);
-                    rearRight.setPower((rear_right) * slow);
-                }
+                    if (speedstate == 1) {
+                        frontLeft.setPower((front_left) * fast);
+                        rearLeft.setPower((rear_left) * fast);
+                        frontRight.setPower((front_right) * fast);
+                        rearRight.setPower((rear_right) * fast);
+                    }
+                    else {
+                        frontLeft.setPower((front_left) * slow);
+                        rearLeft.setPower((rear_left) * slow);
+                        frontRight.setPower((front_right) * slow);
+                        rearRight.setPower((rear_right) * slow);
+                    }
                     //---------claw----------
                     while (gamepad1.dpad_down) {
                         clawLift.setPower(1);
@@ -117,19 +102,21 @@ public class DriverControl extends LinearOpMode {
                     while (gamepad1.dpad_up) {
                         clawLift.setPower(-1);
                     }
+                        clawLift.setPower(0);
 
-                    if (gamepad1.dpad_left) {
-                        claw.setPower(1);
-                    } else if (gamepad1.dpad_right) {
+                    while (gamepad1.dpad_left) {
                         claw.setPower(-1);
+                    }
+                    while (gamepad1.dpad_right) {
+                        claw.setPower(1);
                     }
 
 //------------------------------------Gamepad 1 End-------------------------------------------------
 // ------------------------------------Gamepad 2 Start-------------------------------------------------
                     if (gamepad2.right_trigger == 1) {
-                        shooterServo.setPosition(-1);
+                        shooterServo.setPosition(.25);
                     } else {
-                        shooterServo.setPosition(1);
+                        shooterServo.setPosition(-1);
                     }
 
                     if (gamepad2.a) {
@@ -141,26 +128,15 @@ public class DriverControl extends LinearOpMode {
                     } else if (gamepad2.right_bumper) {
                         intake.setPower(-1);
                     }
+                    if (gamepad2.dpad_down) {
+                        shooter.setPower(0);
+                        intake.setPower(0);
+                    }
             }
 //------------------------------------Gamepad 2 End-------------------------------------------------
 
 
             idle();
-        }
-    }
-    public double limit(double number)
-    {
-        if(number < -1.0)
-        {
-            return -1.0;
-        }
-        else if(number > 1)
-        {
-            return 1;
-        }
-        else
-        {
-            return number;
         }
     }
 }

@@ -81,6 +81,8 @@ public class AutonomousBlue extends LinearOpMode {
         frontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         frontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         clawLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        shooterServo.scaleRange(-1,1);
+        shooterServo.setDirection(Servo.Direction.REVERSE);
 
         //rearLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         //rearRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -115,9 +117,9 @@ public class AutonomousBlue extends LinearOpMode {
             Boolean objectDetected = false;
 
             waitForStart();
-            runtime.reset();
             if (opModeIsActive()) {
-                while (objectDetected == false && runtime.seconds() <= 3) {
+                runtime.reset();
+                while (objectDetected == false && runtime.seconds() < 4) {
                     if (tfod != null) {
                         // getUpdatedRecognitions() will return null if no new information is available since
                         // the last time that call was made.
@@ -127,7 +129,6 @@ public class AutonomousBlue extends LinearOpMode {
                             // step through the list of recognitions and display boundary info.
                             int i = 0;
                             for (Recognition recognition : updatedRecognitions) {
-                                objectDetected = true;
                                 telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
                                 telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
                                         recognition.getLeft(), recognition.getTop());
@@ -135,16 +136,19 @@ public class AutonomousBlue extends LinearOpMode {
                                         recognition.getRight(), recognition.getBottom());
                                 if (recognition.getLabel() == LABEL_FIRST_ELEMENT) {
                                     quadDetected = true;
+                                    objectDetected = true;
+
                                 }
                                 if (recognition.getLabel() == LABEL_SECOND_ELEMENT) {
                                     singleDetected = true;
+                                    objectDetected = true;
+
                                 }
                             }
                             telemetry.update();
                         }
                     }
-                }
-                if (quadDetected == true) {
+                } if (objectDetected == false){
                     claw.setPower(-1);
                     frontLeft.setPower(-.5);
                     frontRight.setPower(.5);
@@ -157,11 +161,245 @@ public class AutonomousBlue extends LinearOpMode {
                     rearLeft.setPower(1);
                     rearRight.setPower(1);
                     sleep(600);
+                    claw.setPower(-1);
+                    frontLeft.setPower(0);
+                    frontRight.setPower(0);
+                    rearLeft.setPower(0);
+                    rearRight.setPower(0);
+                    sleep(500);
                     clawLift.setPower(.75);
                     claw.setPower(-1);
-                    sleep(1000);
+                    sleep(500);
                     claw.setPower(1);
                     sleep(500);
+                    clawLift.setPower(-1);
+                    sleep(500);
+                    frontLeft.setPower(1);
+                    frontRight.setPower(-1);
+                    rearLeft.setPower(-1);
+                    rearRight.setPower(1);
+                    sleep(1000);
+                    frontLeft.setPower(1);
+                    frontRight.setPower(1);
+                    rearLeft.setPower(1);
+                    rearRight.setPower(1);
+                    sleep(200);
+                    frontLeft.setPower(0);
+                    frontRight.setPower(0);
+                    rearLeft.setPower(0);
+                    rearRight.setPower(0);
+                    shooter.setPower(.8);
+                    shooterServo.setPosition(0);
+                    sleep(2000);
+                    shooter.setPower(8);
+                    shooterServo.setPosition(.25);
+                    sleep(1000);
+                    frontLeft.setPower(-.5);
+                    frontRight.setPower(.5);
+                    rearLeft.setPower(.5);
+                    rearRight.setPower(-.5);
+                    shooter.setPower(1);
+                    shooterServo.setPosition(0);
+                    sleep(550);
+                    frontLeft.setPower(0);
+                    frontRight.setPower(0);
+                    rearLeft.setPower(0);
+                    rearRight.setPower(0);
+                    shooter.setPower(.8);
+                    shooterServo.setPosition(.25);
+                    sleep(1000);
+                    frontLeft.setPower(-.5);
+                    frontRight.setPower(.5);
+                    rearLeft.setPower(.5);
+                    rearRight.setPower(-.5);
+                    shooter.setPower(.8);
+                    shooterServo.setPosition(0);
+                    sleep(500);
+                    frontLeft.setPower(0);
+                    frontRight.setPower(0);
+                    rearLeft.setPower(0);
+                    rearRight.setPower(0);
+                    shooter.setPower(.8);
+                    shooterServo.setPosition(.25);
+                    sleep(1000);
+                    frontLeft.setPower(.5);
+                    frontRight.setPower(.5);
+                    rearLeft.setPower(.5);
+                    rearRight.setPower(.5);
+                    shooterServo.setPosition(0);
+                    sleep(300);
+                }
+                //-------quadDetected-----/////
+                if (quadDetected == true) {
+                    claw.setPower(-1);
+                    frontLeft.setPower(-.5);
+                    frontRight.setPower(.5);
+                    rearLeft.setPower(.5);
+                    rearRight.setPower(-.5);
+                    sleep(800);
+                    claw.setPower(-1);
+                    frontLeft.setPower(1);
+                    frontRight.setPower(1);
+                    rearLeft.setPower(1);
+                    rearRight.setPower(1);
+                    sleep(1400);
+                    claw.setPower(-1);
+                    frontLeft.setPower(0);
+                    frontRight.setPower(0);
+                    rearLeft.setPower(0);
+                    rearRight.setPower(0);
+                    sleep(500);
+                    clawLift.setPower(.75);
+                    claw.setPower(-1);
+                    sleep(500);
+                    claw.setPower(1);
+                    sleep(500);
+                    clawLift.setPower(-1);
+                    sleep(500);
+                    frontLeft.setPower(-1);
+                    frontRight.setPower(-1);
+                    rearLeft.setPower(-1);
+                    rearRight.setPower(-1);
+                    sleep(550);
+                    frontLeft.setPower(.75);
+                    frontRight.setPower(-.75);
+                    rearLeft.setPower(-.75);
+                    rearRight.setPower(.75);
+                    sleep(1875);
+                    frontLeft.setPower(0);
+                    frontRight.setPower(0);
+                    rearLeft.setPower(0);
+                    rearRight.setPower(0);
+                    shooter.setPower(.8);
+                    shooterServo.setPosition(0);
+                    sleep(2000);
+                    shooter.setPower(.8);
+                    shooterServo.setPosition(.25);
+                    sleep(1000);
+                    frontLeft.setPower(-.5);
+                    frontRight.setPower(.5);
+                    rearLeft.setPower(.5);
+                    rearRight.setPower(-.5);
+                    shooter.setPower(.8);
+                    shooterServo.setPosition(0);
+                    sleep(550);
+                    frontLeft.setPower(0);
+                    frontRight.setPower(0);
+                    rearLeft.setPower(0);
+                    rearRight.setPower(0);
+                    shooter.setPower(.8);
+                    shooterServo.setPosition(.25);
+                    sleep(1000);
+                    frontLeft.setPower(-.5);
+                    frontRight.setPower(.5);
+                    rearLeft.setPower(.5);
+                    rearRight.setPower(-.5);
+                    shooter.setPower(.8);
+                    shooterServo.setPosition(0);
+                    sleep(500);
+                    frontLeft.setPower(0);
+                    frontRight.setPower(0);
+                    rearLeft.setPower(0);
+                    rearRight.setPower(0);
+                    shooter.setPower(.8);
+                    shooterServo.setPosition(.25);
+                    sleep(1000);
+                    frontLeft.setPower(.5);
+                    frontRight.setPower(.5);
+                    rearLeft.setPower(.5);
+                    rearRight.setPower(.5);
+                    shooterServo.setPosition(0);
+                    sleep(300);
+
+
+
+                }
+                if (singleDetected == true) {
+                    claw.setPower(-1);
+                    frontLeft.setPower(-.5);
+                    frontRight.setPower(.5);
+                    rearLeft.setPower(.5);
+                    rearRight.setPower(-.5);
+                    sleep(800);
+                    claw.setPower(-1);
+                    frontLeft.setPower(1);
+                    frontRight.setPower(1);
+                    rearLeft.setPower(1);
+                    rearRight.setPower(1);
+                    sleep(1300);
+                    claw.setPower(-1);
+                    frontLeft.setPower(.5);
+                    frontRight.setPower(-.5);
+                    rearLeft.setPower(-.5);
+                    rearRight.setPower(.5);
+                    sleep(800);
+                    claw.setPower(-1);
+                    frontLeft.setPower(0);
+                    frontRight.setPower(0);
+                    rearLeft.setPower(0);
+                    rearRight.setPower(0);
+                    sleep(500);
+                    clawLift.setPower(.75);
+                    claw.setPower(-1);
+                    sleep(500);
+                    claw.setPower(1);
+                    sleep(500);
+                    clawLift.setPower(-1);
+                    sleep(500);
+                    frontLeft.setPower(-1);
+                    frontRight.setPower(-1);
+                    rearLeft.setPower(-1);
+                    rearRight.setPower(-1);
+                    sleep(100);
+                    frontLeft.setPower(.75);
+                    frontRight.setPower(-.75);
+                    rearLeft.setPower(-.75);
+                    rearRight.setPower(.75);
+                    sleep(1000);
+                    frontLeft.setPower(0);
+                    frontRight.setPower(0);
+                    rearLeft.setPower(0);
+                    rearRight.setPower(0);
+                    shooter.setPower(.8);
+                    shooterServo.setPosition(0);
+                    sleep(2000);
+                    shooter.setPower(8);
+                    shooterServo.setPosition(.25);
+                    sleep(1000);
+                    frontLeft.setPower(-.5);
+                    frontRight.setPower(.5);
+                    rearLeft.setPower(.5);
+                    rearRight.setPower(-.5);
+                    shooter.setPower(1);
+                    shooterServo.setPosition(0);
+                    sleep(550);
+                    frontLeft.setPower(0);
+                    frontRight.setPower(0);
+                    rearLeft.setPower(0);
+                    rearRight.setPower(0);
+                    shooter.setPower(.8);
+                    shooterServo.setPosition(.25);
+                    sleep(1000);
+                    frontLeft.setPower(-.5);
+                    frontRight.setPower(.5);
+                    rearLeft.setPower(.5);
+                    rearRight.setPower(-.5);
+                    shooter.setPower(.8);
+                    shooterServo.setPosition(0);
+                    sleep(500);
+                    frontLeft.setPower(0);
+                    frontRight.setPower(0);
+                    rearLeft.setPower(0);
+                    rearRight.setPower(0);
+                    shooter.setPower(.8);
+                    shooterServo.setPosition(.25);
+                    sleep(1000);
+                    frontLeft.setPower(.5);
+                    frontRight.setPower(.5);
+                    rearLeft.setPower(.5);
+                    rearRight.setPower(.5);
+                    shooterServo.setPosition(0);
+                    sleep(300);
 
                 }
             }
