@@ -31,7 +31,7 @@ public class StandardTrackingWheelLocalizer extends ThreeTrackingWheelLocalizer 
     public static double WHEEL_RADIUS = 0.6889764; //35mm / 2 = 15.mm ==> inches: https://www.rotacaster.com.au/shop-product/robotic-wheels/rotacaster-35mm-double--solid--roller--abs-body-8-2mm-keyed-bore-no-bushing
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (encoder) speed
 
-    public static double LATERAL_DISTANCE = 13.375; // in; distance between the left and right wheels
+    public static double LATERAL_DISTANCE = 13.297889; // in; distance between the left and right wheels
     public static double FORWARD_OFFSET = 2; // in; offset of the lateral wheel
 
     public static double X_MULTIPLIER = 1.02040816; // Multiplier in the X direction
@@ -51,10 +51,9 @@ public class StandardTrackingWheelLocalizer extends ThreeTrackingWheelLocalizer 
         frontEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "rearLeft"));
 
 
-        leftEncoder.setDirection(Encoder.Direction.REVERSE);
+        //leftEncoder.setDirection(Encoder.Direction.REVERSE);
         rightEncoder.setDirection(Encoder.Direction.REVERSE);
-        frontEncoder.setDirection(Encoder.Direction.REVERSE);
-
+        //frontEncoder.setDirection(Encoder.Direction.REVERSE);
         // TODO: reverse any encoders using Encoder.setDirection(Encoder.Direction.REVERSE)
     }
 
